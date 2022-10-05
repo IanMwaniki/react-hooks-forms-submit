@@ -1,11 +1,11 @@
-import React from "react";
 
-function Form(props) {
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [dataSubmit, setdataSubmit] = React.useState([]);
-  const [errors, setErrors] = React.useState([]);
 
+import React, { useState } from "react";
+
+function Form() {
+  const [firstName, setFirstName] = useState("John");
+  const [lastName, setLastName] = useState("Henry");
+  const [submittedData, setSubmittedData] = useState([]);
 
   function handleFirstNameChange(event) {
     setFirstName(event.target.value);
@@ -15,53 +15,46 @@ function Form(props) {
     setLastName(event.target.value);
   }
 
-  const handleSubmit = (event) => {event.preventDefault();
-  if (firstName.length > 0){
-    const formData = { firstName, lastName };
-    const nameData = [...dataSubmit, formData];
-
-    setdataSubmit([...dataSubmit, nameData]);
-    setdataSubmit(nameData);
-    console.log(nameData);
-
+  function handleSubmit(event) {
+    event.preventDefault();
+    const formData = { firstName: firstName, lastName: lastName };
+    const dataArray = [...submittedData, formData];
+    setSubmittedData(dataArray);
     setFirstName("");
-    setLastName(""); }
-    else {
-      setErrors(["First Name is required"]);
-    }
-  };
+    setLastName("");
+  }
 
-  const handleSubmitnames = dataSubmit.map((data, index) => {
-          return (
-            <div key={index}>
-              <p>{`${data.firstName} ${data.lastName}`}</p>
-            </div>
-          );
-});
-
-return (
-  <>
-    <form onSubmit={handleSubmit}>
-      <input type="text" onChange={handleFirstNameChange} value={firstName} />
-      <input type="text" onChange={handleLastNameChange} value={lastName} />
-      <button type="submit">Submit</button>
-    </form>
-    {/* Render Error Message */}
-    {errors.length > 0 && (
-      <div>
-        {errors.map((error, index) => (
-          <p key={index}>{error}</p>
-        ))}
+  const listOfSubmissions = submittedData.map((data, index) => {
+    return (
+      <div key={index}>
+        {data.firstName} {data.lastName}
       </div>
-    )}
-
-    <h3>Submissions</h3>
-    {handleSubmitnames}
-  </>
-);
-
+    );
+  });
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input type="text" onChange={handleFirstNameChange} value={firstName} />
+        <input type="text" onChange={handleLastNameChange} value={lastName} />
+        <button type="submit">Submit</button>
+      </form>
+      <h3>Submissions</h3>
+      {listOfSubmissions}
+    </div>
+  );
 }
 
-
+//   return (
+//     <div>
+//       <form onSubmit={handleSubmit}>
+//         <input type="text" onChange={handleFirstNameChange} value={firstName} />
+//         <input type="text" onChange={handleLastNameChange} value={lastName} />
+//         <button type="submit">Submit</button>
+//       </form>
+//       <h3>Submissions</h3>
+//       {listOfSubmissions}
+//     </div>
+//   );
+// }
 
 export default Form;
